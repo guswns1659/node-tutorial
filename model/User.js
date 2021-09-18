@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+// Q : key가 자동으로 email로 잡힌건지?
 const userSchema = mongoose.Schema({
     name: {
         type: String,

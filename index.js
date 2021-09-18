@@ -4,13 +4,14 @@ const port = 3000
 const bodyParser = require('body-parser')
 const {User} = require("./model/User")
 const moongoose = require('mongoose')
+const config = require('./config/key')
 
 // application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({extended: true}))
 // application/json
 app.use(bodyParser.json())
 
-moongoose.connect('mongodb+srv://jack:12345@boilerpalte.esksy.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', err => {
+moongoose.connect(config.mongoURL, err => {
     if (err) console.log(err);
     console.log('Connected to MongoDB!!!')
 })

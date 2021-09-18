@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 // hash 만들 때 필요한 salt의 글자 수
 const saltRounds = 10
+const jwt = require('jsonwebtoken')
 
 // Q : key가 자동으로 email로 잡힌건지?
 const userSchema = mongoose.Schema({
@@ -16,7 +17,6 @@ const userSchema = mongoose.Schema({
     },
     password: {
         type: String,
-        maxLength: 5
     },
     lastname: {
         type: String,
@@ -53,6 +53,26 @@ userSchema.pre('save', function (next) {
         next()
     }
 })
+
+userSchema.methods.comparePassword = function (plainPassword, cb) {
+    // plainPassword = 12345 , encryptedpassword = fdsakfiejnkds322n4jdsh
+    bcrypt.compare(plainPassword, this.password, function (err, isMatch) {
+        if (err) return cb(err)
+        cb(null, isMatch)
+    })
+}
+
+userSchema.methods.genToken = function (cb) {
+
+    var user = this;
+
+    user.token = jwt.sign(user._id.toHexString(), 'secretToken');
+
+    user.save(function (err, user) {
+        if (err) return cb(err)
+        cb(null, user)
+    })
+}
 
 const User = mongoose.model('User', userSchema);
 

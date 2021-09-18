@@ -5,6 +5,7 @@ const bodyParser = require('body-parser')
 const {User} = require("./model/User")
 const moongoose = require('mongoose')
 const config = require('./config/key')
+const cookieParser = require('cookie-parser')
 
 // application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({extended: true}))
@@ -18,21 +19,60 @@ moongoose.connect(config.mongoURL, err => {
 
 // jack / 12345
 
+// welcome
 app.get('/', (req, res) => {
     res.send('Hello World!!!!!!!')
 })
 
+// register
 app.post('/register', ((req, res) => {
 
     const user = new User(req.body);
     // 암호화
     user.save((err, userInfo) => {
-        if(err) return res.json({ success: false, err})
+        if (err) return res.json({success: false, err})
         return res.status(200).json({
             body: userInfo,
             success: true
         })
     })
+}))
+
+// login
+app.post('/login', ((req, res) => {
+    // find email in DB
+    User.findOne({email: req.body.email}, (err, user) => {
+        if (!user) {
+            return res.json({
+                loginSuccess: false,
+                message: "There is no user matched with requested email"
+            })
+        }
+
+        // check whether requested password is equal with password of DB
+        user.comparePassword(req.body.password, (err, isMatch) => {
+            if (!isMatch) {
+                return res.json({
+                    loginSuccess: false, message: "Wrong Password"
+                })
+            }
+
+            // create token if requested password is correct
+            user.genToken((err, user) => {
+                if (err) return res.status(400).send(err)
+
+                // save token at cookie
+                res.cookie('x_auth', user.token)
+                    .status(200)
+                    .json({
+                        loginSuccess: true,
+                        userid: user._id
+                    })
+            })
+        })
+    })
+
+
 }))
 
 app.listen(port, () => {

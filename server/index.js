@@ -1,6 +1,5 @@
 const express = require('express')
 const app = express()
-const port = 3000
 const bodyParser = require('body-parser')
 const {User} = require("./model/User")
 const moongoose = require('mongoose')
@@ -19,13 +18,18 @@ moongoose.connect(config.mongoURL, err => {
 
 // jack / 12345
 
+// hello
+app.get('/api/hello', (req, res) => {
+    res.send('Hello!!')
+})
+
 // welcome
 app.get('/', (req, res) => {
     res.send('Hello World!!!!!!!')
 })
 
 // register
-app.post('/register', ((req, res) => {
+app.post('/api/users/register', ((req, res) => {
 
     const user = new User(req.body);
     // 암호화
@@ -39,7 +43,7 @@ app.post('/register', ((req, res) => {
 }))
 
 // login
-app.post('/login', ((req, res) => {
+app.post('/api/users/login', ((req, res) => {
     // find email in DB
     User.findOne({email: req.body.email}, (err, user) => {
         if (!user) {
@@ -71,10 +75,9 @@ app.post('/login', ((req, res) => {
             })
         })
     })
-
-
 }))
 
+const port = 5000
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)
 })

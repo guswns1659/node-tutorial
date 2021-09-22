@@ -5,11 +5,11 @@ import {
 
 export function loginUser(dataTosubmit) {
 
-    const request = axios.post('/api/users/login', dataTosubmit)
+    const response = axios.post('/api/users/login', dataTosubmit)
         .then(response =>  response.data );
 
     return {
         type: LOGIN_USER,
-        payload: request
+        payload: response
     }
 }

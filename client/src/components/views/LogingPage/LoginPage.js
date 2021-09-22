@@ -18,8 +18,8 @@ function LoginPage(props) {
         setPassword(event.currentTarget.value)
     }
 
-    const onSumbitHandler = (event) => {
-        /** prevent page refreshing.
+    const onSubmitHandler = (event) => {
+        /** prevent changing value when page is refreshing.
          */
         event.preventDefault();
 
@@ -44,7 +44,7 @@ function LoginPage(props) {
             width: '100%', height: '100vh'
         }}>
             <form style={{display: 'flex', flexDirection: 'column'}}
-                onSubmit={onSumbitHandler}
+                onSubmit={onSubmitHandler}
             >
 
                 <label>Email</label>

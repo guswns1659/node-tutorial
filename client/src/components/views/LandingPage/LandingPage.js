@@ -1,8 +1,7 @@
 import React, {useEffect} from 'react';
-import userEvent from "@testing-library/user-event";
 import axios from "axios";
 
-function LandingPage() {
+function LandingPage(props) {
 
     useEffect(() => {
         axios.get('/api/hello').then(r => console.log(r))
@@ -14,7 +13,7 @@ function LandingPage() {
             width: '100%', height: '100vh'
         }}>
             <h2>
-                시작페이지
+                LandingPage
             </h2>
         </div>
     );

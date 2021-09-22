@@ -1,5 +1,6 @@
 import React from 'react';
 
+// rsf template
 function Footer(props) {
     return (
         <div>

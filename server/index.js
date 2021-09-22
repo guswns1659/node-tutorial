@@ -24,9 +24,15 @@ app.get('/api/hello', (req, res) => {
 })
 
 // welcome
-app.get('/', (req, res) => {
+app.get('/api', (req, res) => {
     res.send('Hello World!!!!!!!')
 })
+
+// test
+app.get('/api/hello', ((req, res) => {
+        res.send('Hello!!!')
+    }
+))
 
 // register
 app.post('/api/users/register', ((req, res) => {
